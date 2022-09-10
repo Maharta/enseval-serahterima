@@ -6,8 +6,8 @@
       alt="logo enseval"
     />
 
-    <button class="pr-5" ref="logoutBtn" v-if="currentUser" @click="logout">
-      Logout
+    <button @click="logout" class="mr-3">
+      <font-awesome-icon icon="fa-solid fa-right-from-bracket" size="xl" />
     </button>
   </header>
 </template>

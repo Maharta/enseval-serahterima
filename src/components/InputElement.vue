@@ -10,10 +10,10 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from "vue";
+import { computed } from "vue";
 
 const props = defineProps(["type", "id", "mode", "modelValue"]);
-const emit = defineEmits("update:modelValue");
+const emit = defineEmits(["update:modelValue"]);
 
 const inputElementClass = computed(() => {
   return props.mode === "small"
