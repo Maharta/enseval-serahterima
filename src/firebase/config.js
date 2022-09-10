@@ -3,6 +3,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -15,7 +16,7 @@ import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyCikhQpbd0cP7Cg4qGso3eGG3IJdDWYKrQ",
 
-  authDomain: "enseval-serahterima.firebaseapp.com",
+  authDomain: "serahterima-enseval.firebaseapp.com",
 
   projectId: "enseval-serahterima",
 
@@ -33,5 +34,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 const auth = getAuth();
+const db = getFirestore(app);
 
-export { auth };
+export { auth, db };
