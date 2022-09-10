@@ -16,7 +16,7 @@ const onLoginPage = computed(() => {
 });
 
 const routerViewClass = computed(() => {
-  return onLoginPage.value ? "py-3" : "ml-36 px-3 py-3";
+  return onLoginPage.value ? "py-3" : "md:ml-36 px-3 py-3";
 });
 
 const headerClass = computed(() => {
