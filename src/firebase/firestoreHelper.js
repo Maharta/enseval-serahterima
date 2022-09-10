@@ -5,7 +5,7 @@ const roleTranslator = () => {
   const owner = auth.currentUser.uid;
   return {
     owner: owner,
-    ekspedisi: "RWyBwDwiVtWa9s6FPfszzNFcDth2",
+    ekspedisi: "RWyBwDwiVtWa9s6FPfszzNFcDth2", // ekspedisi account UID, only this role can see all items.
   };
 };
 
