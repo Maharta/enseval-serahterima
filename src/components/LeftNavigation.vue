@@ -1,27 +1,15 @@
 <template>
   <nav
-    class="inline-block h-full w-34 absolute text-slate-500 border-r border-r-black p-2"
+    class="flex justify-around text-slate-500 border-r border-r-black p-2 md:inline-block md:h-full md:w-36 md:text-center md:absolute"
   >
-    <div class="gap hover:text-black">
-      <a href="">Dashboard</a>
+    <div class="hover:text-black">
+      <router-link to="/dashboard" href="">Dashboard</router-link>
     </div>
-    <div class="gap hover:text-black">
-      <a href="">Upload Data</a>
+    <div class="md:my-5 hover:text-black">
+      <router-link to="/upload" href="">Upload Data</router-link>
     </div>
-    <div class="gap hover:text-black">
-      <a href="">Data</a>
+    <div class="md:my-5 hover:text-black">
+      <router-link to="/data">Data</router-link>
     </div>
   </nav>
 </template>
-
-<style>
-.gap:not(:first-child) {
-  margin: 20px 0;
-  outline: red;
-}
-
-.gap {
-  padding-left: 18px;
-  padding-right: 18px;
-}
-</style>
