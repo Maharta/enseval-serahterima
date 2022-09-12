@@ -1,39 +1,36 @@
 import { Timestamp } from "firebase/firestore";
 import { auth } from "../firebase/config";
 
-const roleTranslator = () => {
-  const owner = auth.currentUser.uid;
-  return {
-    owner: owner,
-    ekspedisi: "RWyBwDwiVtWa9s6FPfszzNFcDth2", // ekspedisi account UID, only this role can see all items.
-  };
+const EKPEDISI_ID = "RWyBwDwiVtWa9s6FPfszzNFcDth2";
+
+const OwnerTranslator = {
+  qKISUN5y6vfuq7W8XQDhLX71Qzk2: "farma",
+  RWyBwDwiVtWa9s6FPfszzNFcDth2: "ekspedisi",
 };
 
-class Dokumen {
+class Document {
   constructor({ id, nilai, tanggal = Timestamp.now(), ket }) {
     this.id = id;
     this.nilai = nilai;
     this.tanggal = tanggal;
     this.keterangan = ket;
-    this.roles = roleTranslator();
   }
 }
 
-const DokumenConverter = {
-  toFireStore: (dokumen) => {
+const DocumentConverter = {
+  toFireStore: (document) => {
     console.log(auth.currentUser.uid);
     return {
-      id: dokumen.id,
-      nilai: dokumen.nilai,
-      tanggal: dokumen.tanggal,
-      keterangan: dokumen.keterangan,
-      roles: dokumen.roles,
+      id: document.id,
+      nilai: document.nilai,
+      tanggal: document.tanggal,
+      keterangan: document.keterangan,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Dokumen(data.id, data.nilai, data.tanggal, data.keterangan);
+    return new Document(data.id, data.nilai, data.tanggal, data.keterangan);
   },
 };
 
-export { Dokumen, DokumenConverter };
+export { Document, DocumentConverter, EKPEDISI_ID, OwnerTranslator };

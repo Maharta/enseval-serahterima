@@ -58,9 +58,6 @@ async function login() {
     loginButton.value.classList.remove("scale-90");
   }, 100);
 
-  console.log(username.value);
-  console.log(password.value);
-
   try {
     const response = await signInWithEmailAndPassword(
       auth,

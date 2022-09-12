@@ -30,15 +30,19 @@
 import InputElement from "../components/InputElement.vue";
 import { ref } from "vue";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { Dokumen, DokumenConverter } from "../firebase/firestoreHelper";
+import { auth, db } from "../firebase/config";
+import {
+  Document,
+  DocumentConverter,
+  OwnerTranslator,
+} from "../firebase/firestoreHelper";
 
 const id = ref("");
 const nilai = ref("");
 const ket = ref("");
 
 async function uploadData() {
-  const dokumen = new Dokumen({
+  const dokumen = new Document({
     id: id.value,
     nilai: nilai.value,
     ket: ket.value,
@@ -46,8 +50,8 @@ async function uploadData() {
 
   try {
     const docRef = await addDoc(
-      collection(db, "dokumen"),
-      DokumenConverter.toFireStore(dokumen)
+      collection(db, OwnerTranslator[`${auth.currentUser.uid}`]),
+      DocumentConverter.toFireStore(dokumen)
     );
     console.log(`document added with an id of ${docRef.id}`);
   } catch (error) {

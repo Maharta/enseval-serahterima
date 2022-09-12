@@ -6,7 +6,7 @@
       alt="logo enseval"
     />
 
-    <button @click="logout" class="mr-3">
+    <button @click="logout" v-if="userStore.isAuthenticated" class="mr-3">
       <font-awesome-icon icon="fa-solid fa-right-from-bracket" size="xl" />
     </button>
   </header>
@@ -14,15 +14,11 @@
 
 <script setup>
 import { signOut } from "@firebase/auth";
-import { ref } from "vue";
 import { auth } from "../firebase/config";
 import router from "../router/index";
+import { useUserStore } from "../stores/userStore";
 
-const currentUser = ref(auth.currentUser);
-
-auth.onAuthStateChanged(() => {
-  currentUser.value = auth.currentUser;
-});
+const userStore = useUserStore();
 
 async function logout() {
   try {
