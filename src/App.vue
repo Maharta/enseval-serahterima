@@ -1,6 +1,7 @@
 <template>
   <EnsevalHeader :class="headerClass" />
   <LeftNavigation v-if="!onLoginPage" />
+  <ConfirmDialog />
   <RouterView :class="routerViewClass" />
 </template>
 
