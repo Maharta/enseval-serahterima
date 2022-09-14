@@ -11,7 +11,9 @@ import PrimeVue from "primevue/config";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import ConfirmDialog from "primevue/confirmdialog";
 
+import ConfirmationService from "primevue/confirmationservice";
 import "primevue/resources/themes/saga-green/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
@@ -31,6 +33,8 @@ const pinia = createPinia();
 
 app.use(router);
 app.use(pinia);
+app.use(PrimeVue);
+app.use(ConfirmationService);
 
 const userStore = useUserStore();
 
@@ -48,13 +52,12 @@ const onAuthStateChangedPromise = new Promise((resolve, reject) => {
 
 export const onAuthStateInit = () => onAuthStateChangedPromise;
 
-app.use(PrimeVue);
-
 app
   .component("BaseCard", BaseCard)
   .component("font-awesome-icon", FontAwesomeIcon)
   .component("DataTable", DataTable)
   .component("Column", Column)
-  .component("Button", Button);
+  .component("Button", Button)
+  .component("ConfirmDialog", ConfirmDialog);
 
 app.mount("#app");
