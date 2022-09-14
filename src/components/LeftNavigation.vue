@@ -11,5 +11,8 @@
     <div class="md:my-5 hover:text-black">
       <router-link to="/data">Data</router-link>
     </div>
+    <div class="md:my-5 hover:text-black">
+      <router-link to="/request">Pending</router-link>
+    </div>
   </nav>
 </template>
