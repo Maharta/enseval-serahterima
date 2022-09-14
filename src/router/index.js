@@ -13,8 +13,8 @@ const router = createRouter({
         requiresAuth: false,
       },
       beforeEnter: async () => {
-        const currentUser = await onAuthStateInit();
-        if (currentUser) {
+        const userStore = useUserStore();
+        if (userStore.user) {
           return { name: "dashboard" };
         }
       },
@@ -64,7 +64,6 @@ router.beforeEach(async (to) => {
   const userStore = useUserStore();
 
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-    alert("Anda harus logged in untuk melihat halaman ini");
     return { name: "login" };
   } else {
     return true;
