@@ -59,12 +59,7 @@ async function login() {
   }, 100);
 
   try {
-    const response = await signInWithEmailAndPassword(
-      auth,
-      username.value,
-      password.value
-    );
-    console.log(response);
+    await signInWithEmailAndPassword(auth, username.value, password.value);
     router.push("/dashboard");
   } catch (error) {
     alert(error.message);
