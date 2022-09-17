@@ -9,22 +9,16 @@
         <p>Enseval Terbaik</p>
       </div>
 
-      <label
-        for="username"
-        placeholder="input your username here"
-        class="placeholder:text-zinc-400"
-        >Email</label
-      >
       <InputElement
+        label="Email"
         id="username"
         type="text"
         v-model="username"
         placeholder="Ketik email anda disini"
       ></InputElement>
 
-      <label for="password" class="placeholder:text-zinc-400">Password</label>
-
       <InputElement
+        label="Password"
         id="password"
         type="password"
         v-model="password"
