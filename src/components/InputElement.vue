@@ -1,7 +1,7 @@
 <template>
+  <label>{{ label }}</label>
   <input
-    :type="type"
-    :id="id"
+    v-bind="$attrs"
     :mode="mode"
     :value="modelValue"
     @input="updateInput"
@@ -12,7 +12,20 @@
 <script setup>
 import { computed } from "vue";
 
-const props = defineProps(["type", "id", "mode", "modelValue"]);
+const props = defineProps({
+  label: {
+    type: String,
+    default: "title",
+  },
+  mode: {
+    type: String,
+    default: "",
+  },
+  modelValue: {
+    type: [String, Number],
+    default: "",
+  },
+});
 const emit = defineEmits(["update:modelValue"]);
 
 const inputElementClass = computed(() => {

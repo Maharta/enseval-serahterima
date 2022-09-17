@@ -4,6 +4,7 @@
     :rows="10"
     :value="documentList"
     :loading="isLoading"
+    :rowClass="rowClass"
   >
     <template #empty> No records found </template>
     <Column field="id" :sortable="true" header="ID"></Column>
@@ -48,9 +49,9 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { db } from "../firebase/config";
+import { ref } from "vue";
 import { OwnerTranslator, deleteDocument } from "../firebase/firestoreHelper";
 import { useListenToDataChanges } from "../composables/useListenToDataChanges";
-import { ref } from "vue";
 import { useConfirm } from "primevue/useconfirm";
 
 const userStore = useUserStore();
@@ -101,4 +102,8 @@ function confirmStatus(id) {
     onHide: () => confirm.close(),
   });
 }
+
+const rowClass = (data) => {
+  return data.status === "done" ? "bg-green-400 !important" : null;
+};
 </script>

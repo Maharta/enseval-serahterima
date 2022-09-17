@@ -15,7 +15,7 @@
 <script setup>
 import { signOut } from "@firebase/auth";
 import { auth } from "../firebase/config";
-import router from "../router/index";
+import router from "../router";
 import { useUserStore } from "../stores/userStore";
 
 const userStore = useUserStore();
@@ -25,7 +25,7 @@ async function logout() {
     await signOut(auth);
     router.push("/");
   } catch (error) {
-    alert(error.message);
+    console.log(error);
   }
 }
 </script>
