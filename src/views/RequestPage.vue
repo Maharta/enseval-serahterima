@@ -91,8 +91,8 @@ function confirmStatus(id) {
       const collectionName = "pending";
       const q = query(collection(db, collectionName), where("id", "==", id));
       getDocs(q).then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          updateDoc(doc.ref, {
+        querySnapshot.forEach(async (doc) => {
+          await updateDoc(doc.ref, {
             status: "done",
           });
         });
@@ -104,6 +104,11 @@ function confirmStatus(id) {
 }
 
 const rowClass = (data) => {
-  return data.status === "done" ? "bg-green-400 !important" : null;
+  return data.status === "done" ? "done" : null;
 };
 </script>
+
+<style scoped>
+:deep(.done) {
+}
+</style>
