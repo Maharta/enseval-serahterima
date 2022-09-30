@@ -13,33 +13,34 @@
     <Column field="keterangan" header="Keterangan" :sortable="true"></Column>
     <Column field="owner" header="Owner" :sortable="true"></Column>
     <Column field="status" header="Status" :sortable="true"></Column>
-    <Column headerStyle="width: 8em" bodyStyle="text-align: center">
-      <template #header>
-        <Button type="button" icon="pi pi-cog"></Button>
-      </template>
+    <Column
+      v-if="isEkspedisi"
+      header="Actions"
+      headerStyle="width: 8em"
+      bodyStyle="text-align: center"
+    >
       <template #body="slotProps">
         <Button
           type="button"
           icon="pi pi-check"
           class="p-button-success"
-          v-if="isEkpedisi"
-          :disabled="slotProps.data.status === 'done'"
           @click="confirmStatus(slotProps.data.id)"
           style="margin-right: 0.5em"
         ></Button>
         <Button
-          v-else
           type="button"
-          icon="pi pi-trash"
+          icon="pi pi-times"
           class="p-button-warning"
-          @click="deleteDocById(slotProps.data.id)"
-        ></Button>
+          @click="showCancelDialog(slotProps.data.id)"
+        >
+        </Button>
       </template>
     </Column>
   </DataTable>
 </template>
 
 <script setup>
+import CancelForm from "../components/forms/CancelForm.vue";
 import { useUserStore } from "../stores/userStore";
 import {
   query,
@@ -47,24 +48,23 @@ import {
   where,
   getDocs,
   updateDoc,
+  addDoc,
+  deleteDoc,
 } from "@firebase/firestore";
 import { db } from "../firebase/config";
 import { ref } from "vue";
-import { OwnerTranslator, deleteDocument } from "../firebase/firestoreHelper";
+import { OwnerTranslator } from "../firebase/firestoreHelper";
 import { useListenToDataChanges } from "../composables/useListenToDataChanges";
 import { useConfirm } from "primevue/useconfirm";
+import { useDialog } from "primevue/usedialog";
 
 const userStore = useUserStore();
-const currentUser = userStore.user;
-const confirm = useConfirm();
+const isEkspedisi = ref(false);
+isEkspedisi.value = OwnerTranslator[userStore.user.uid] === "ekspedisi";
 
-const isEkpedisi = ref(false);
-isEkpedisi.value = OwnerTranslator[currentUser.uid] === "ekspedisi";
-
-let q;
-
+let q; //query for fetch and listen
 if (userStore.isAuthenticated) {
-  if (isEkpedisi.value) {
+  if (isEkspedisi.value) {
     q = collection(db, "pending");
   } else {
     q = query(
@@ -73,16 +73,11 @@ if (userStore.isAuthenticated) {
     );
   }
 }
-
 const { documentList, isLoading } = useListenToDataChanges(q);
 
-function deleteDocById(id) {
-  const collectionName = "pending";
-  deleteDocument(id, collectionName);
-}
-
+const confirmDialog = useConfirm();
 function confirmStatus(id) {
-  confirm.require({
+  confirmDialog.require({
     message:
       "Apakah anda yakin ingin melakukan konfirmasi? Order yang telah dikonfirmasi tidak dapat diubah kembali",
     header: "Konfirmasi",
@@ -95,11 +90,25 @@ function confirmStatus(id) {
           await updateDoc(doc.ref, {
             status: "done",
           });
+          const updatedDoc = Object.assign(doc.data(), {
+            status: "done",
+          });
+          addDoc(collection(db, "done"), updatedDoc);
+          deleteDoc(doc.ref);
         });
       });
     },
-    reject: () => confirm.close(),
-    onHide: () => confirm.close(),
+    reject: () => confirmDialog.close(),
+    onHide: () => confirmDialog.close(),
+  });
+}
+
+const dynamicdialog = useDialog();
+function showCancelDialog(id) {
+  dynamicdialog.open(CancelForm, {
+    data: {
+      id: id,
+    },
   });
 }
 
@@ -107,8 +116,3 @@ const rowClass = (data) => {
   return data.status === "done" ? "done" : null;
 };
 </script>
-
-<style scoped>
-:deep(.done) {
-}
-</style>

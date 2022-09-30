@@ -1,23 +1,20 @@
 import { createApp } from "vue";
-import App from "./App.vue";
 import { createPinia } from "pinia";
 import { useUserStore } from "./stores/userStore";
 import { auth } from "./firebase/config";
 import router from "./router/index";
-import "./firebase/config";
-import "./index.css"; // TAILWIND
-import BaseCard from "./components/BaseCard.vue";
 import PrimeVue from "primevue/config";
+import App from "./App.vue";
+import BaseCard from "./components/Base/BaseCard.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
-import ConfirmDialog from "primevue/confirmdialog";
-
 import ConfirmationService from "primevue/confirmationservice";
+import DialogService from "primevue/dialogservice";
+import "./index.css"; // TAILWIND
 import "primevue/resources/themes/saga-green/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
-
 // import fontawesome core library
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -35,6 +32,7 @@ app.use(router);
 app.use(pinia);
 app.use(PrimeVue);
 app.use(ConfirmationService);
+app.use(DialogService);
 
 const userStore = useUserStore();
 
@@ -57,7 +55,6 @@ app
   .component("font-awesome-icon", FontAwesomeIcon)
   .component("DataTable", DataTable)
   .component("Column", Column)
-  .component("Button", Button)
-  .component("ConfirmDialog", ConfirmDialog);
+  .component("Button", Button);
 
 app.mount("#app");

@@ -17,10 +17,17 @@ export function useListenToDataChanges(q) {
         documentList.value.push(data);
       }
       if (change.type === "modified") {
-        documentList.value = documentList.value.filter(
-          (doc) => doc.id !== data.id
-        );
-        documentList.value.push(data);
+        // documentList.value = documentList.value.filter(
+        //   (doc) => doc.id !== data.id
+        // );
+        documentList.value = [];
+        snapshot.docs.forEach((doc) => {
+          const data = doc.data();
+          documentList.value.push({
+            ...data,
+            tanggal: data.tanggal.toDate().toLocaleString(),
+          });
+        });
       }
       if (change.type === "removed") {
         documentList.value = documentList.value.filter(

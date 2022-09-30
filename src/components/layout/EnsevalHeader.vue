@@ -1,7 +1,7 @@
 <template>
   <header>
     <img
-      src="../assets/logo_enseval.jpeg"
+      src="../../assets/logo_enseval.jpeg"
       class="w-28 h-28 pl-1"
       alt="logo enseval"
     />
@@ -14,9 +14,9 @@
 
 <script setup>
 import { signOut } from "@firebase/auth";
-import { auth } from "../firebase/config";
-import router from "../router";
-import { useUserStore } from "../stores/userStore";
+import { auth } from "../../firebase/config";
+import router from "../../router";
+import { useUserStore } from "../../stores/userStore";
 
 const userStore = useUserStore();
 

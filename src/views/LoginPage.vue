@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import InputElement from "../components/InputElement.vue";
+import InputElement from "../components/forms/InputElement.vue";
 import { ref } from "vue";
 import { auth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "@firebase/auth";
@@ -54,7 +54,7 @@ async function login() {
 
   try {
     await signInWithEmailAndPassword(auth, username.value, password.value);
-    router.push("/dashboard");
+    router.push("/upload");
   } catch (error) {
     alert(error.message);
   }

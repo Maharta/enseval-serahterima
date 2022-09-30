@@ -12,7 +12,6 @@
 <script setup>
 import { computed } from "vue";
 const props = defineProps(["bgColor", "hoverColor"]);
-console.log(props);
 const buttonClass = computed(() => {
   if (props.bgColor === undefined && props.hoverColor === undefined) return "";
   if (props.bgColor === undefined) return props.hoverColor;

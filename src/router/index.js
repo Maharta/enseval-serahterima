@@ -15,7 +15,7 @@ const router = createRouter({
       beforeEnter: async () => {
         const userStore = useUserStore();
         if (userStore.user) {
-          return { name: "dashboard" };
+          return { name: "data" };
         }
       },
     },
@@ -53,6 +53,16 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+    },
+    {
+      path: "/done",
+      name: "done",
+      component: () => import("../views/DonePage.vue"),
+    },
+    {
+      path: "/canceled",
+      name: "canceled",
+      component: () => import("../views/CanceledPage.vue"),
     },
   ],
 });

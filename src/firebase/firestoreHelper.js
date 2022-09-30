@@ -4,6 +4,7 @@ import {
   getDocs,
   query,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "./config";
@@ -48,6 +49,22 @@ const DocumentConverter = {
   },
 };
 
+const editDocument = async (id, collectionName, order) => {
+  const q = query(collection(db, collectionName), where("id", "==", id));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    try {
+      updateDoc(doc.ref, {
+        id: order.id,
+        nilai: order.nilai,
+        keterangan: order.keterangan,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+};
+
 const deleteDocument = async (id, collectionName) => {
   const q = query(collection(db, collectionName), where("id", "==", id));
   const querySnapshot = await getDocs(q);
@@ -63,4 +80,5 @@ export {
   OwnerTranslator,
   isEkspedisi,
   deleteDocument,
+  editDocument,
 };

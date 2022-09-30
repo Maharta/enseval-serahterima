@@ -3,7 +3,7 @@
     <div>
       <form
         @submit.prevent="uploadData"
-        class="flex flex-col items-center justify-center card"
+        class="flex flex-col items-center justify-center"
       >
         <div>
           <InputElement
@@ -20,7 +20,7 @@
             label="Nilai Dokumen"
             type="text"
             mode="small"
-            id="id"
+            id="nilai"
             v-model="form.nilai"
           />
         </div>
@@ -29,12 +29,17 @@
             label="Keterangan"
             type="text"
             mode="small"
-            id="id"
+            id="ket"
             v-model="form.ket"
           />
         </div>
         <div>
-          <button>Upload Order</button>
+          <Button
+            type="submit"
+            class="p-button-raised p-button-rounded"
+            style="padding: 0.5rem 3rem; margin-top: 1rem"
+            >Upload</Button
+          >
         </div>
       </form>
     </div>
@@ -42,7 +47,7 @@
 </template>
 
 <script setup>
-import InputElement from "../components/InputElement.vue";
+import InputElement from "../components/forms/InputElement.vue";
 import { reactive } from "vue";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/config";

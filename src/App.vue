@@ -2,15 +2,18 @@
   <EnsevalHeader :class="headerClass" />
   <LeftNavigation v-if="!onLoginPage" />
   <ConfirmDialog />
+  <DynamicDialog />
   <RouterView :class="routerViewClass" />
 </template>
 
 <script setup>
 import { RouterView } from "vue-router";
-import EnsevalHeader from "./components/EnsevalHeader.vue";
-import LeftNavigation from "./components/LeftNavigation.vue";
+import EnsevalHeader from "./components/layout/EnsevalHeader.vue";
+import LeftNavigation from "./components/layout/LeftNavigation.vue";
 import router from "./router";
 import { computed } from "vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import DynamicDialog from "primevue/dynamicdialog";
 
 const onLoginPage = computed(() => {
   return router.currentRoute.value.fullPath === "/" ? true : false;
