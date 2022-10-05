@@ -26,7 +26,7 @@
             icon="pi pi-check-circle"
             class="p-button-success"
             style="margin-right: 0.5em"
-            @click="moveToPending(slotProps.data)"
+            @click="openConfirmDialog(slotProps.data)"
           ></Button>
           <Button
             type="button"
@@ -57,14 +57,28 @@
     >
       <OrderForm :order="reactiveOrder" btnLabel="Edit"></OrderForm>
     </BaseModal>
+    <BaseModal type="big" v-if="isDialogOpen" @close-modal="closeDialog">
+      <BasePrompt @confirm="confirmDialog">
+        <template #body>
+          <p>
+            <strong
+              >Apakah anda yakin ingin mengirimkan order ini ke ekspedisi? order
+              yang telah dikirim tidak dapat dihapus kembali!</strong
+            >
+          </p>
+        </template>
+      </BasePrompt>
+    </BaseModal>
   </section>
 </template>
 
 <script setup>
 import OrderForm from "../components/forms/OrderForm.vue";
 import BaseModal from "../components/Base/BaseModal.vue";
+import BasePrompt from "../components/Base/BasePrompt.vue";
 import { collection, addDoc, Timestamp } from "@firebase/firestore";
 import { useListenToDataChanges } from "../composables/useListenToDataChanges";
+import { useConfirmDialog } from "../composables/useConfirmDialog";
 import { db } from "../firebase/config";
 import { useUserStore } from "../stores/userStore";
 import {
@@ -77,12 +91,10 @@ import { reactive } from "vue";
 import { useModalStore } from "../stores/modalStore";
 
 const userStore = useUserStore();
-const modalStore = useModalStore();
+
 const collectionName = OwnerTranslator[userStore.user.uid];
 const collectionRef = collection(db, collectionName);
 const { documentList, isLoading } = useListenToDataChanges(collectionRef);
-
-const reactiveOrder = reactive({});
 
 async function moveToPending(data) {
   deleteDocument(data.id, collectionName);
@@ -104,8 +116,17 @@ async function moveToPending(data) {
   }
 }
 
+const { isDialogOpen, confirmDialog, openDialog, closeDialog } =
+  useConfirmDialog(moveToPending); // confirmDialog for send to ekspedisi, also used for modal state
+
+function openConfirmDialog(data) {
+  openDialog(data);
+}
+
+const reactiveOrder = reactive({});
+const modalStore = useModalStore(); // modalstore for edit order modal state
+
 function openModal(order) {
-  console.log(order);
   Object.assign(reactiveOrder, order);
   modalStore.isModalOpen = true;
 }
