@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div @click="$emit('closeModal')" class="backdrop"></div>
-    <div class="modal">
+    <div class="modal" :class="modalClass">
       <div class="header flex justify-end">
         <Button @click="$emit('closeModal')" class="p-button-warning">x</Button>
       </div>
@@ -11,7 +11,16 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+
 defineEmits(["closeModal"]);
+const props = defineProps({
+  type: String,
+});
+
+const modalClass = computed(() => {
+  return props.type === "big" ? "big" : "small";
+});
 </script>
 
 <style scoped>
@@ -31,9 +40,16 @@ defineEmits(["closeModal"]);
   padding: 1rem;
   background-color: white;
   z-index: 999;
-  top: 20%;
   left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal.small {
   width: 300px;
-  margin-left: -150px;
+}
+
+.modal.big {
+  width: 70%;
 }
 </style>
