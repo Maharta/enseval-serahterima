@@ -56,7 +56,13 @@
       @close-modal="modalStore.closeModal"
       v-if="modalStore.isModalOpen"
     >
-      <OrderForm :order="reactiveOrder" btnLabel="Edit"></OrderForm>
+      <OrderForm
+        @submit="editOrder"
+        :id="editOrderProps.id"
+        :nilai="editOrderProps.nilai"
+        :keterangan="editOrderProps.keterangan"
+        btnLabel="Edit"
+      ></OrderForm>
     </BaseModal>
 
     <BaseModal type="big" v-if="isDialogOpen" @close-modal="closeDialog">
@@ -88,6 +94,7 @@ import {
   deleteDocument,
   Document,
   DocumentConverter,
+  editDocument,
 } from "../firebase/firestoreHelper";
 import { reactive } from "vue";
 import { useModalStore } from "../stores/modalStore";
@@ -108,11 +115,10 @@ async function moveToPending(data) {
       owner: data.owner,
       tanggal: Timestamp.fromMillis(Date.parse(data.tanggal)),
     });
-    const docRef = await addDoc(
+    await addDoc(
       collection(db, "pending"),
       DocumentConverter.toFireStore(document)
     );
-    console.log(`document added with an id of ${docRef.id}`);
   } catch (error) {
     console.log(error.message);
   }
@@ -125,11 +131,27 @@ function openConfirmDialog(data) {
   openDialog(data);
 }
 
-const reactiveOrder = reactive({});
+const editOrderProps = reactive({
+  id: "",
+  nilai: "",
+  keterangan: "",
+});
 const modalStore = useModalStore(); // modalstore for edit order modal state
 
-function openEditModal(order) {
-  Object.assign(reactiveOrder, order);
-  modalStore.isModalOpen = true;
+function openEditModal(data) {
+  editOrderProps.id = data.id;
+  editOrderProps.nilai = data.nilai;
+  editOrderProps.keterangan = data.keterangan;
+  modalStore.openModal();
+}
+
+function editOrder(initialId, id, nilai, keterangan) {
+  const collectionName = OwnerTranslator[userStore.user.uid];
+  editDocument(initialId, collectionName, {
+    id,
+    nilai,
+    keterangan,
+  });
+  modalStore.closeModal();
 }
 </script>
