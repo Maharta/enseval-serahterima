@@ -3,7 +3,7 @@
     <DataTable
       :value="documentList"
       :paginator="true"
-      :rows="10"
+      :rows="5"
       :loading="isLoading"
     >
       <template #empty> No records found </template>
@@ -33,7 +33,7 @@
             class="p-button-warning"
             style="margin-right: 0.5em"
             icon="pi pi-pencil"
-            @click="openModal(slotProps.data)"
+            @click="openEditModal(slotProps.data)"
           >
           </Button>
           <Button
@@ -51,12 +51,14 @@
         </template>
       </Column>
     </DataTable>
+
     <BaseModal
       @close-modal="modalStore.closeModal"
       v-if="modalStore.isModalOpen"
     >
       <OrderForm :order="reactiveOrder" btnLabel="Edit"></OrderForm>
     </BaseModal>
+
     <BaseModal type="big" v-if="isDialogOpen" @close-modal="closeDialog">
       <BasePrompt @confirm="confirmDialog">
         <template #body>
@@ -126,7 +128,7 @@ function openConfirmDialog(data) {
 const reactiveOrder = reactive({});
 const modalStore = useModalStore(); // modalstore for edit order modal state
 
-function openModal(order) {
+function openEditModal(order) {
   Object.assign(reactiveOrder, order);
   modalStore.isModalOpen = true;
 }
