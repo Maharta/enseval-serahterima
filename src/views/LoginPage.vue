@@ -13,8 +13,9 @@
         label="Email"
         id="username"
         type="text"
-        v-model="username"
         placeholder="Ketik email anda disini"
+        @input="emailProps.onInput"
+        @blur="emailProps.onBlur"
       ></InputElement>
 
       <InputElement
@@ -23,6 +24,8 @@
         type="password"
         v-model="password"
         placeholder="ketik password anda disini"
+        @input="passwordProps.onInput"
+        @blur="passwordProps.onBlur"
       ></InputElement>
       <button
         class="hover:bg-blue-700 w-full py-3 rounded-full block mx-auto mt-6 text-white bg-blue-400"
@@ -40,9 +43,11 @@ import { ref } from "vue";
 import { auth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "@firebase/auth";
 import router from "../router";
+import { useInput } from "../composables/useInput";
+import { validateNoEmpty } from "../helpers/validateHelpers";
 
-const username = ref("");
-const password = ref("");
+const [emailState, emailProps] = useInput(validateNoEmpty);
+const [passwordState, passwordProps] = useInput(validateNoEmpty);
 
 const loginButton = ref(null);
 
@@ -53,7 +58,11 @@ async function login() {
   }, 100);
 
   try {
-    await signInWithEmailAndPassword(auth, username.value, password.value);
+    await signInWithEmailAndPassword(
+      auth,
+      emailState.input.value,
+      passwordState.input.value
+    );
     router.push("/upload");
   } catch (error) {
     alert(error.message);
