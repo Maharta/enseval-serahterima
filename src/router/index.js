@@ -20,14 +20,6 @@ const router = createRouter({
       },
     },
     {
-      path: "/dashboard",
-      name: "dashboard",
-      component: () => import("../views/DashboardPage.vue"),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
       path: "/upload",
       name: "upload",
       // route level code-splitting
