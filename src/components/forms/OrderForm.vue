@@ -9,7 +9,9 @@
         type="text"
         mode="small"
         id="id"
-        v-model="form.id"
+        :value="idState.input.value"
+        @blur="idProps.onBlur"
+        @input="idProps.onInput"
       />
     </div>
 
@@ -19,7 +21,9 @@
         type="text"
         mode="small"
         id="nilai"
-        v-model="form.nilai"
+        :value="nilaiState.input.value"
+        @blur="nilaiProps.onBlur"
+        @input="nilaiProps.onInput"
       />
     </div>
     <div>
@@ -28,43 +32,46 @@
         type="text"
         mode="small"
         id="ket"
-        v-model="form.keterangan"
+        :value="ketState.input.value"
+        @blur="ketProps.onBlur"
+        @input="ketProps.onInput"
       />
     </div>
-    <div>
-      <Button type="submit">{{ btnLabel }}</Button>
-    </div>
+    <Button :disabled="!isFormValid" type="submit">{{ btnLabel }}</Button>
   </form>
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import InputElement from "../forms/InputElement.vue";
 import { editDocument, OwnerTranslator } from "../../firebase/firestoreHelper";
 import { useUserStore } from "../../stores/userStore";
+import { useInput } from "../../composables/useInput";
+import { validateNoEmpty } from "../../helpers/validateHelpers";
 import { useModalStore } from "../../stores/modalStore";
+import { computed } from "vue";
 
 const userStore = useUserStore();
 const modalStore = useModalStore();
 
 const props = defineProps({
-  id: String,
   btnLabel: String,
   order: Object,
 });
 
-const form = reactive({
-  id: props.order.id, // initial state only
-  nilai: props.order.nilai,
-  keterangan: props.order.keterangan,
-});
+const [idState, idProps] = useInput(validateNoEmpty, props.order.id);
+const [nilaiState, nilaiProps] = useInput(validateNoEmpty, props.order.nilai);
+const [ketState, ketProps] = useInput(validateNoEmpty, props.order.keterangan);
+const isFormValid = computed(
+  () =>
+    idState.isValid.value && nilaiState.isValid.value && ketState.isValid.value
+);
 
 function editOrder() {
   const collectionName = OwnerTranslator[userStore.user.uid];
   editDocument(props.order.id, collectionName, {
-    id: form.id,
-    nilai: form.nilai,
-    keterangan: form.keterangan,
+    id: idState.input.value,
+    nilai: nilaiState.input.value,
+    keterangan: ketState.input.value,
   });
   modalStore.closeModal();
 }
