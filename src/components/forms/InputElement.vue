@@ -3,8 +3,8 @@
   <input
     v-bind="$attrs"
     :mode="mode"
-    :value="modelValue"
     @input="updateInput"
+    class="rounded-sm outline outline-1 focus:outline-2 outline-slate-500 mb-4 block"
     :class="inputElementClass"
   />
 </template>
@@ -26,15 +26,13 @@ const props = defineProps({
     default: "",
   },
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["input"]);
 
 const inputElementClass = computed(() => {
-  return props.mode === "small"
-    ? "rounded-sm outline outline-1 focus:outline-2 outline-slate-500 mb-4 block p-2"
-    : "rounded-sm outline outline-1 focus:outline-2 outline-slate-500 mb-4 block p-3";
+  return props.mode === "small" ? "p-2" : "p-3";
 });
 
 function updateInput(event) {
-  emit("update:modelValue", event.target.value);
+  emit("input", event);
 }
 </script>
