@@ -45,7 +45,13 @@ const DocumentConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Document(data.id, data.nilai, data.tanggal, data.keterangan);
+    return new Document(
+      data.id,
+      data.nilai,
+      data.tanggal,
+      data.keterangan,
+      data.owner
+    );
   },
 };
 
