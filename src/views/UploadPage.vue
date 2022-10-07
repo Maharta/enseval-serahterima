@@ -2,7 +2,7 @@
   <main>
     <OrderForm @submit="uploadData" btn-label="Upload" />
     <BaseModal v-if="isDialogOpen" @close-modal="closeDialog">
-      <p class="p-4">Order berhasil diupload</p>
+      <p class="p-4 pt-0">Order berhasil diupload</p>
     </BaseModal>
   </main>
 </template>
