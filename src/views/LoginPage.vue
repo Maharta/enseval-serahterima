@@ -45,6 +45,7 @@ import { signInWithEmailAndPassword } from "@firebase/auth";
 import router from "../router";
 import { useInput } from "../composables/useInput";
 import { validateNoEmpty } from "../helpers/validateHelpers";
+import { isEkspedisi } from "../firebase/firestoreHelper";
 
 const [emailState, emailProps] = useInput(validateNoEmpty);
 const [passwordState, passwordProps] = useInput(validateNoEmpty);
@@ -58,12 +59,16 @@ async function login() {
   }, 100);
 
   try {
-    await signInWithEmailAndPassword(
+    const authData = await signInWithEmailAndPassword(
       auth,
       emailState.input.value,
       passwordState.input.value
     );
-    router.push("/upload");
+    if (!isEkspedisi(authData.user.uid)) {
+      router.replace("/upload");
+    } else {
+      router.replace("/request");
+    }
   } catch (error) {
     alert(error.message);
   }
