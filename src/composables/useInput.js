@@ -30,7 +30,7 @@ export function useInput(validateFn, initialValue = "") {
   };
 
   return [
-    { isTouched, isValid, isInputInvalid, input },
-    { onBlur, onInput, reset, placeHolder },
+    { isTouched, isValid, isInputInvalid, input, reset },
+    { onBlur, onInput, placeHolder },
   ];
 }
