@@ -106,5 +106,8 @@ function emitSubmit() {
     nilaiState.input.value,
     ketState.input.value
   );
+  idState.reset();
+  nilaiState.reset();
+  ketState.reset();
 }
 </script>
