@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { onAuthStateInit } from "../main";
 import { useUserStore } from "../stores/userStore";
+import { isEkspedisi } from "../firebase/firestoreHelper";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,9 +15,15 @@ const router = createRouter({
       },
       beforeEnter: async () => {
         const userStore = useUserStore();
-        if (userStore.user) {
-          return { name: "data" };
+        if (!userStore.isAuthenticated) {
+          return true;
         }
+
+        if (isEkspedisi(userStore.user.uid)) {
+          return { name: "request" };
+        }
+
+        return { name: "upload" };
       },
     },
     {
@@ -50,11 +57,17 @@ const router = createRouter({
       path: "/done",
       name: "done",
       component: () => import("../views/DonePage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/canceled",
       name: "canceled",
       component: () => import("../views/CanceledPage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });
