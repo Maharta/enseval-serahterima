@@ -5,7 +5,8 @@
       id="ket"
       :placeholder="placeholder"
       type="text"
-      v-model="ket"
+      @blur="ketProps.onBlur"
+      @input="ketProps.onInput"
       required
       pattern="\S(.*\S)?"
     ></InputElement>
@@ -27,12 +28,14 @@ import {
   updateDoc,
   where,
 } from "@firebase/firestore";
-import { ref, inject } from "vue";
+import { inject } from "vue";
+import { useInput } from "../../composables/useInput";
 import { db } from "../../firebase/config";
+import { validateNoEmpty } from "../../helpers/validateHelpers";
 import InputElement from "./InputElement.vue";
 
 const placeholder = "Sertakan alasan cancel disini.";
-const ket = ref("");
+const [ketState, ketProps] = useInput(validateNoEmpty);
 
 const dialogRef = inject("dialogRef");
 function cancelOrder() {
@@ -46,7 +49,7 @@ function cancelOrder() {
       });
       const updatedDoc = Object.assign(doc.data(), {
         status: "canceled",
-        keterangan: ket.value,
+        keterangan: ketState.input.value,
       });
       addDoc(collection(db, "canceled"), updatedDoc);
       deleteDoc(doc.ref);
