@@ -19,6 +19,9 @@ const isEkspedisi = (id) => {
 const OwnerTranslator = {
   qKISUN5y6vfuq7W8XQDhLX71Qzk2: "farma",
   RWyBwDwiVtWa9s6FPfszzNFcDth2: "ekspedisi",
+  gdRshc7LoBhEVG2Z7XqMCQCWYxB3: "CHB",
+  LDKZ83v5UqOlUT37xn6ZA74B5eB2: "KND",
+  PKOVeJsrx6h0a8PMKjrlXTv598c2: "CHD",
 };
 
 class Document {
