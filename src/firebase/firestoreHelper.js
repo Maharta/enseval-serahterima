@@ -69,7 +69,7 @@ const editDocument = async (id, collectionName, order) => {
         keterangan: order.keterangan,
       });
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   });
 };

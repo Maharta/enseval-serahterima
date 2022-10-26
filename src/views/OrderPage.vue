@@ -120,7 +120,7 @@ async function moveToPending(data) {
       DocumentConverter.toFireStore(document)
     );
   } catch (error) {
-    console.log(error.message);
+    alert(error.message);
   }
 }
 

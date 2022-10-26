@@ -37,7 +37,7 @@ async function uploadData(_, id, nilai, keterangan) {
     );
     openDialog();
   } catch (error) {
-    console.log(error.message);
+    alert(error.message);
   }
 }
 </script>

@@ -1,9 +1,46 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
+    function translateUID (uid) {
+    	return {
+      	"qKISUN5y6vfuq7W8XQDhLX71Qzk2": "farma",
+  			"RWyBwDwiVtWa9s6FPfszzNFcDth2": "ekspedisi",
+  			"gdRshc7LoBhEVG2Z7XqMCQCWYxB3": "CHB",
+  			"LDKZ83v5UqOlUT37xn6ZA74B5eB2": "KND",
+  			"PKOVeJsrx6h0a8PMKjrlXTv598c2": "CHD",
+      }.get(uid, null)
+    }
+    function isSignedIn() {
+          return request.auth != null;
+    }
+    match /farma/{document} {
       allow read, write: if
-          request.time < timestamp.date(2022, 10, 10);
+          isSignedIn() && translateUID(request.auth.uid) == "farma"
+    }
+    match /CHB/{document} {
+    	allow read, write: if
+          isSignedIn() && translateUID(request.auth.uid) == "CHB"
+    }
+    match /KND/{document} {
+    	allow read, write: if
+          isSignedIn() && translateUID(request.auth.uid) == "KND"
+    }
+    match /CHD/{document} {
+    	allow read, write: if
+          isSignedIn() && translateUID(request.auth.uid) == "CHD"
+    }
+    match /pending/{document} {
+    	allow read, write: if isSignedIn() && translateUID(request.auth.uid) == "ekspedisi"
+      allow read: if isSignedIn() && resource.data.owner == translateUID(request.auth.uid)
+ 			allow create: if isSignedIn()   
+    }
+    match /canceled/{document} {
+    	allow read, create: if isSignedIn() && translateUID(request.auth.uid) == "ekspedisi"
+      allow read: if isSignedIn() && resource.data.owner == translateUID(request.auth.uid)
+    }
+     match /done/{document} {
+    	allow read, create: if isSignedIn() && translateUID(request.auth.uid) == "ekspedisi"
+      allow read: if isSignedIn() && resource.data.owner == translateUID(request.auth.uid)
     }
   }
 }
