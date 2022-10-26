@@ -25,7 +25,7 @@ async function logout() {
     await signOut(auth);
     router.push("/");
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 }
 </script>
