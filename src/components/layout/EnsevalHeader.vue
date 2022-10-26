@@ -2,9 +2,12 @@
   <header>
     <img
       src="../../assets/logo_enseval.jpeg"
-      class="w-28 h-28 pl-1"
+      class="w-28 h-28 pl-1 mr-auto"
       alt="logo enseval"
     />
+    <router-link v-if="userStore.isAuthenticated" to="/change-password">
+      <font-awesome-icon icon="fa-regular fa-user" size="xl" />
+    </router-link>
 
     <button @click="logout" v-if="userStore.isAuthenticated" class="mr-3">
       <font-awesome-icon icon="fa-solid fa-right-from-bracket" size="xl" />
