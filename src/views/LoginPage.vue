@@ -12,7 +12,7 @@
       <InputElement
         label="Email"
         id="username"
-        type="text"
+        type="email"
         placeholder="Ketik email anda disini"
         @input="emailProps.onInput"
         @blur="emailProps.onBlur"
@@ -22,7 +22,6 @@
         label="Password"
         id="password"
         type="password"
-        v-model="password"
         placeholder="ketik password anda disini"
         @input="passwordProps.onInput"
         @blur="passwordProps.onBlur"

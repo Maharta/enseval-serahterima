@@ -26,7 +26,7 @@ const routerViewClass = computed(() => {
 const headerClass = computed(() => {
   return onLoginPage.value
     ? "flex justify-between items-center"
-    : "border-b-black border-b flex justify-between items-center";
+    : "border-b-black border-b flex items-center gap-5";
 });
 </script>
 

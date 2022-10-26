@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div @click="$emit('closeModal')" class="backdrop"></div>
-    <div class="modal" :class="modalClass">
+    <div class="modal" v-bind="$attrs" :class="modalClass">
       <div class="header flex justify-end">
         <Button @click="$emit('closeModal')" class="p-button-warning">x</Button>
       </div>
@@ -19,7 +19,14 @@ const props = defineProps({
 });
 
 const modalClass = computed(() => {
-  return props.type === "big" ? "big" : "small";
+  switch (props.type) {
+    case "big":
+      return "big";
+    case "authenticate":
+      return "authenticate";
+    default:
+      return "small";
+  }
 });
 </script>
 
@@ -50,6 +57,11 @@ const modalClass = computed(() => {
 }
 
 .modal.big {
-  width: 70%;
+  width: 50%;
+}
+
+.modal.authenticate {
+  width: 90%;
+  max-width: 400px;
 }
 </style>

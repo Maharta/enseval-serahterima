@@ -3,7 +3,7 @@
     class="flex justify-around text-slate-500 border-r border-r-black p-2 md:inline-block md:h-full md:w-36 md:text-center md:absolute"
   >
     <div v-if="!isEkspedisi" class="md:my-5 hover:text-black">
-      <router-link to="/upload" href="">Upload</router-link>
+      <router-link to="/upload">Upload</router-link>
     </div>
     <div v-if="!isEkspedisi" class="md:my-5 hover:text-black">
       <router-link to="/data">Data</router-link>
